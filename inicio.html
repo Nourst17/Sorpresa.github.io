@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Página Amorosa - Inicio</title>
+    <style>
+        :root {
+            --image-size: 120px;
+            --border-padding: 15px;
+        }
+
+        /* Media queries para hacer la página responsive */
+        @media (max-width: 1200px) {
+            :root {
+                --image-size: 100px;
+                --border-padding: 15px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            :root {
+                --image-size: 80px;
+                --border-padding: 10px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            :root {
+                --image-size: 60px;
+                --border-padding: 5px;
+            }
+            .message {
+                font-size: 1.5rem;
+            }
+            .heart {
+                font-size: 4rem;
+            }
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background: radial-gradient(circle, #ff99cc, #ff66b3, #ff3399, #ff0066, #cc0052);
+            animation: backgroundPulse 1s infinite;
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        
+        @keyframes backgroundPulse {
+            0%, 100% {
+                background: radial-gradient(circle, #ff99cc, #ff66b3, #ff3399, #ff0066, #cc0052);
+            }
+            50% {
+                background: radial-gradient(circle, #ffb3d9, #ff80c1, #ff4da6, #ff1a75, #e60073);
+            }
+        }
+
+        .message {
+            font-size: 2.5rem;
+            color: #fff;
+            text-shadow: 0 0 5px #ff0066, 0 0 10px #ff0066;
+            text-align: center;
+            margin-bottom: 30px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .heart {
+            font-size: 6rem;
+            animation: heartbeat 1s infinite;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #ff0066;
+            position: relative;
+            z-index: 1;
+            margin-bottom: 40px;
+        }
+        
+        .button-container {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .love-button {
+            padding: 15px 30px;
+            background: linear-gradient(45deg, #ff3366, #ff66b3);
+            color: white;
+            font-size: 1.5rem;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(255, 51, 102, 0.5);
+            transition: all 0.3s ease;
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            animation: pulse 2s infinite;
+        }
+        
+        .love-button:hover {
+            background: linear-gradient(45deg, #ff66b3, #ff3366);
+            box-shadow: 0 7px 20px rgba(255, 51, 102, 0.7);
+            transform: scale(1.05);
+        }
+
+        @keyframes heartbeat {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.3);
+            }
+        }
+        
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+        }
+        
+        /* Animación de salida */
+        .page-transition {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #ff3366;
+            z-index: 1000;
+            transform: scale(0);
+            border-radius: 50%;
+            pointer-events: none;
+            transition: transform 0.8s cubic-bezier(0.86, 0, 0.07, 1);
+        }
+        
+        .page-transition.active {
+            transform: scale(2);
+        }
+    </style>
+</head>
+<body>
+    <div class="message">¡Te amo con todo mi corazón!</div>
+    <div class="heart">💖</div>
+    <div class="button-container">
+        <button class="love-button" id="loveBtn">¡SORPRESA!</button>
+    </div>
+    
+    <div class="page-transition" id="pageTransition"></div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const loveBtn = document.getElementById('loveBtn');
+            const pageTransition = document.getElementById('pageTransition');
+            
+            // Crear elemento de audio
+            const backgroundMusic = new Audio('musica/inicio.mp3');
+            
+            // Configurar propiedades
+            backgroundMusic.loop = true;
+            backgroundMusic.volume = 0.5;
+            
+            // Intentar reproducir automáticamente
+            const playPromise = backgroundMusic.play();
+            
+            if (playPromise !== undefined) {
+                playPromise.catch(function() {
+                    // Si falla la reproducción automática, configuramos para reproducir con el primer clic
+                    document.addEventListener('click', function playOnFirstClick() {
+                        backgroundMusic.play();
+                        // Eliminar este evento después del primer clic
+                        document.removeEventListener('click', playOnFirstClick);
+                    }, { once: true });
+                });
+            }
+            
+            // Manejar el clic en el botón
+            loveBtn.addEventListener('click', function() {
+                // Activar la animación de transición
+                pageTransition.classList.add('active');
+                
+                // Detener la música gradualmente
+                const fadeAudio = setInterval(function() {
+                    if (backgroundMusic.volume > 0.1) {
+                        backgroundMusic.volume -= 0.1;
+                    } else {
+                        clearInterval(fadeAudio);
+                        backgroundMusic.pause();
+                    }
+                }, 100);
+                
+                // Redirigir después de que termine la animación
+                setTimeout(function() {
+                    window.location.href = 'index.html';
+                }, 800);
+            });
+        });
+    </script>
+</body>
+</html>

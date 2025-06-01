@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Página Amorosa</title>
+    <style>
+        :root {
+            --image-size: 120px; /* Tamaño más pequeño para mejor organización */
+            --border-padding: 15px; /* Espacio entre el borde y las imágenes */
+        }
+
+        /* Media queries para hacer la página responsive */
+        @media (max-width: 1200px) {
+            :root {
+                --image-size: 100px;
+                --border-padding: 15px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            :root {
+                --image-size: 80px;
+                --border-padding: 10px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            :root {
+                --image-size: 60px;
+                --border-padding: 5px;
+            }
+            .message {
+                font-size: 1.5rem;
+            }
+            .heart {
+                font-size: 4rem;
+            }
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background: radial-gradient(circle, #ff99cc, #ff66b3, #ff3399, #ff0066, #cc0052);
+            animation: backgroundPulse 1s infinite;
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            flex-direction: column;
+            overflow: hidden; /* Prevenir scrollbars si algo se desborda */
+        }
+        
+        @keyframes backgroundPulse {
+            0%, 100% {
+                background: radial-gradient(circle, #ff99cc, #ff66b3, #ff3399, #ff0066, #cc0052);
+            }
+            50% {
+                background: radial-gradient(circle, #ffb3d9, #ff80c1, #ff4da6, #ff1a75, #e60073);
+            }
+        }
+
+        .message {
+            font-size: 2rem;
+            color: #fff; /* Cambiado a blanco para mejor contraste con fondos oscuros */
+            text-shadow: 0 0 5px #ff0066, 0 0 10px #ff0066; /* Sombra para destacar */
+            text-align: center;
+            margin-bottom: 20px;
+            position: relative; /* Para que z-index funcione */
+            z-index: 1; /* Para estar por encima del collage */
+        }
+
+        .heart {
+            font-size: 5rem;
+            animation: heartbeat 1s infinite;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #ff0066; /* Color explícito para el corazón emoji si es necesario */
+            position: relative; /* Para que z-index funcione */
+            z-index: 1; /* Para estar por encima del collage */
+        }
+
+        .collage {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            /* No se necesita z-index aquí si el texto tiene z-index > 0 */
+            overflow: hidden; /* Prevenir desbordamiento en pantallas pequeñas */
+            pointer-events: none; /* Permite hacer clic a través del collage */
+        }
+        
+        .collage img {
+            position: absolute;
+            width: var(--image-size);
+            height: var(--image-size);
+            object-fit: cover;
+            border-radius: 10px; /* Imágenes cuadradas con bordes ligeramente redondeados */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease; /* Transición suave para cambios de tamaño */
+            pointer-events: auto; /* Restaura la interactividad solo para las imágenes */
+        }
+
+        /* Esquinas */
+        .collage img:nth-child(1) { /* Esquina superior izquierda */
+            top: var(--border-padding);
+            left: var(--border-padding);
+        }
+        
+        .collage img:nth-child(2) { /* Esquina superior derecha */
+            top: var(--border-padding);
+            right: var(--border-padding);
+        }
+        
+        .collage img:nth-child(3) { /* Esquina inferior izquierda */
+            bottom: var(--border-padding);
+            left: var(--border-padding);
+        }
+        
+        .collage img:nth-child(4) { /* Esquina inferior derecha */
+            bottom: var(--border-padding);
+            right: var(--border-padding);
+        }
+        
+        /* Borde superior - 5 imágenes entre las esquinas superiores */
+        .collage img:nth-child(5) {
+            top: var(--border-padding);
+            left: calc(var(--border-padding) + var(--image-size));
+        }
+        .collage img:nth-child(6) {
+            top: var(--border-padding);
+            left: calc(var(--border-padding) + 2*var(--image-size));
+        }
+        .collage img:nth-child(7) {
+            top: var(--border-padding);
+            left: calc(var(--border-padding) + 3*var(--image-size));
+        }
+        .collage img:nth-child(8) {
+            top: var(--border-padding);
+            left: calc(var(--border-padding) + 4*var(--image-size));
+        }
+        .collage img:nth-child(9) {
+            top: var(--border-padding);
+            left: calc(var(--border-padding) + 5*var(--image-size));
+        }
+        
+        /* Borde inferior - 5 imágenes entre las esquinas inferiores */
+        .collage img:nth-child(10) {
+            bottom: var(--border-padding);
+            left: calc(var(--border-padding) + var(--image-size));
+        }
+        .collage img:nth-child(11) {
+            bottom: var(--border-padding);
+            left: calc(var(--border-padding) + 2*var(--image-size));
+        }
+        .collage img:nth-child(12) {
+            bottom: var(--border-padding);
+            left: calc(var(--border-padding) + 3*var(--image-size));
+        }
+        .collage img:nth-child(13) {
+            bottom: var(--border-padding);
+            left: calc(var(--border-padding) + 4*var(--image-size));
+        }
+        .collage img:nth-child(14) {
+            bottom: var(--border-padding);
+            left: calc(var(--border-padding) + 5*var(--image-size));
+        }
+        
+        /* Borde izquierdo - 3 imágenes entre las esquinas izquierdas */
+        .collage img:nth-child(15) {
+            left: var(--border-padding);
+            top: calc(var(--border-padding) + var(--image-size));
+        }
+        .collage img:nth-child(16) {
+            left: var(--border-padding);
+            top: calc(var(--border-padding) + 2*var(--image-size));
+        }
+        .collage img:nth-child(17) {
+            left: var(--border-padding);
+            top: calc(var(--border-padding) + 3*var(--image-size));
+        }
+        
+        /* Borde derecho - 5 imágenes entre las esquinas derechas */
+        .collage img:nth-child(18) {
+            right: var(--border-padding);
+            top: calc(var(--border-padding) + var(--image-size));
+        }
+        .collage img:nth-child(19) {
+            right: var(--border-padding);
+            top: calc(var(--border-padding) + 2*var(--image-size));
+        }
+        .collage img:nth-child(20) {
+            right: var(--border-padding);
+            top: calc(var(--border-padding) + 3*var(--image-size));
+        }
+        .collage img:nth-child(21) {
+            right: var(--border-padding);
+            top: calc(var(--border-padding) + 4*var(--image-size));
+        }
+        .collage img:nth-child(22) {
+            right: var(--border-padding);
+            top: calc(var(--border-padding) + 5*var(--image-size));
+        }
+        
+        /* Imágenes adicionales para completar el borde superior */
+        .collage img:nth-child(23) {
+            top: var(--border-padding);
+            left: calc(var(--border-padding) + 6*var(--image-size));
+        }
+        .collage img:nth-child(24) {
+            top: var(--border-padding);
+            left: calc(var(--border-padding) + 7*var(--image-size));
+        }
+        .collage img:nth-child(25) {
+            top: var(--border-padding);
+            left: calc(var(--border-padding) + 8*var(--image-size));
+        }
+        .collage img:nth-child(26) {
+            top: var(--border-padding);
+            left: calc(var(--border-padding) + 9*var(--image-size));
+        }
+        
+        /* Imágenes adicionales para completar el borde inferior */
+        .collage img:nth-child(27) {
+            bottom: var(--border-padding);
+            left: calc(var(--border-padding) + 6*var(--image-size));
+        }
+        .collage img:nth-child(28) {
+            bottom: var(--border-padding);
+            left: calc(var(--border-padding) + 7*var(--image-size));
+        }
+        .collage img:nth-child(29) {
+            bottom: var(--border-padding);
+            left: calc(var(--border-padding) + 8*var(--image-size));
+        }
+        .collage img:nth-child(30) {
+            bottom: var(--border-padding);
+            left: calc(var(--border-padding) + 9*var(--image-size));
+        }
+        
+        /* Imágenes adicionales para completar el borde izquierdo */
+        .collage img:nth-child(31) {
+            left: var(--border-padding);
+            top: calc(var(--border-padding) + 4*var(--image-size));
+        }
+        .collage img:nth-child(32) {
+            left: var(--border-padding);
+            top: calc(var(--border-padding) + 5*var(--image-size));
+        }
+        .collage img:nth-child(33) {
+            left: var(--border-padding);
+            top: calc(var(--border-padding) + 6*var(--image-size));
+        }
+        
+        /* Imágenes adicionales para completar el borde derecho */
+        .collage img:nth-child(34) {
+            right: var(--border-padding);
+            top: calc(var(--border-padding) + 6*var(--image-size));
+        }
+
+        @keyframes heartbeat {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.3);
+            }
+        }
+        
+        /* Estilos para el botón de casa */
+        .home-button {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(45deg, #ff3366, #ff66b3);
+            color: white;
+            font-size: 2rem;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(255, 51, 102, 0.5);
+            z-index: 100;
+            transition: all 0.3s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            animation: float 2s infinite;
+        }
+
+        .home-button:hover {
+            background: linear-gradient(45deg, #ff66b3, #ff3366);
+            box-shadow: 0 7px 20px rgba(255, 51, 102, 0.7);
+            transform: translateX(-50%) scale(1.1);
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateX(-50%) translateY(0);
+            }
+            50% {
+                transform: translateX(-50%) translateY(-10px);
+            }
+        }
+
+        /* Animación de salida */
+        .page-transition {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #ff3366;
+            z-index: 1000;
+            transform: scale(0);
+            border-radius: 50%;
+            pointer-events: none;
+            transition: transform 0.8s cubic-bezier(0.86, 0, 0.07, 1);
+        }
+
+        .page-transition.active {
+            transform: scale(2);
+        }
+    </style>
+    <script>
+        // Función para reproducir música de fondo cuando la página se cargue
+        document.addEventListener('DOMContentLoaded', function() {
+            // Crear elemento de audio
+            const backgroundMusic = new Audio('musica/fondo.mp3');
+            
+            // Configurar propiedades
+            backgroundMusic.loop = true; // La música se repetirá
+            backgroundMusic.volume = 0.5; // Volumen al 50%
+            
+            // Intentar reproducir automáticamente
+            const playPromise = backgroundMusic.play();
+            
+            if (playPromise !== undefined) {
+                playPromise.catch(function() {
+                    // Si falla la reproducción automática, configuramos para reproducir con el primer clic
+                    document.addEventListener('click', function playOnFirstClick() {
+                        backgroundMusic.play();
+                        // Eliminar este evento después del primer clic
+                        document.removeEventListener('click', playOnFirstClick);
+                    }, { once: true });
+                });
+            }
+            
+            // Configurar el botón de casa
+            const homeBtn = document.getElementById('homeBtn');
+            const pageTransition = document.getElementById('pageTransition');
+            
+            if (homeBtn && pageTransition) {
+                homeBtn.addEventListener('click', function() {
+                    // Activar la animación de transición
+                    pageTransition.classList.add('active');
+                    
+                    // Detener la música gradualmente
+                    const fadeAudio = setInterval(function() {
+                        if (backgroundMusic.volume > 0.1) {
+                            backgroundMusic.volume -= 0.1;
+                        } else {
+                            clearInterval(fadeAudio);
+                            backgroundMusic.pause();
+                        }
+                    }, 100);
+                    
+                    // Redirigir después de que termine la animación
+                    setTimeout(function() {
+                        window.location.href = 'bienvenida.html';
+                    }, 800);
+                });
+            }
+        });
+    </script>
+</head>
+<body>
+    <div class="content">
+        <div class="message">Te amo mucho mi niña hermosa</div>
+        <div class="heart">💗</div>
+        <div class="collage">
+            <!-- Esquinas -->
+            <img src="imagenes/foto1.jpg" alt="Foto 1">
+            <img src="imagenes/foto2.jpg" alt="Foto 2">
+            <img src="imagenes/foto3.webp" alt="Foto 3">
+            <img src="imagenes/foto4.jpg" alt="Foto 4">
+            
+            <!-- Borde superior -->
+            <img src="imagenes/foto5.webp" alt="Foto 5">
+            <img src="imagenes/foto6.jpg" alt="Foto 6">
+            <img src="imagenes/foto7.jpg" alt="Foto 7">
+            <img src="imagenes/foto8.jpg" alt="Foto 8">
+            <img src="imagenes/foto9.jpg" alt="Foto 9">
+            
+            <!-- Borde inferior -->
+            <img src="imagenes/foto10.jpg" alt="Foto 10">
+            <img src="imagenes/foto11.jpg" alt="Foto 11">
+            <img src="imagenes/foto12.jpg" alt="Foto 12">
+            <img src="imagenes/foto13.jpg" alt="Foto 13">
+            <img src="imagenes/foto14.jpg" alt="Foto 14">
+            
+            <!-- Borde izquierdo -->
+            <img src="imagenes/foto15.jpg" alt="Foto 15">
+            <img src="imagenes/foto16.jpg" alt="Foto 16">
+            <img src="imagenes/foto17.jpg" alt="Foto 17">
+            
+            <!-- Borde derecho -->
+            <img src="imagenes/foto18.webp" alt="Foto 18">
+            <img src="imagenes/foto19.webp" alt="Foto 19">
+            <img src="imagenes/foto20.webp" alt="Foto 20">
+            
+            <!-- Borde derecho - imágenes adicionales -->
+            <img src="imagenes/foto21.jpg" alt="Foto 21">
+            <img src="imagenes/foto22.jpg" alt="Foto 22">
+            
+            <!-- Borde superior - imágenes adicionales -->
+            <img src="imagenes/foto23.jpg" alt="Foto 23">
+            <img src="imagenes/foto24.jpg" alt="Foto 24">
+            <img src="imagenes/foto25.jpg" alt="Foto 25">
+            <img src="imagenes/foto26.jpg" alt="Foto 26">
+            
+            <!-- Borde inferior - imágenes adicionales -->
+            <img src="imagenes/foto27.jpg" alt="Foto 27">
+            <img src="imagenes/foto28.jpg" alt="Foto 28">
+            <img src="imagenes/foto29.jpg" alt="Foto 29">
+            <img src="imagenes/foto30.jpg" alt="Foto 30">
+            
+            <!-- Borde izquierdo - imágenes adicionales -->
+            <img src="imagenes/foto31.jpg" alt="Foto 31">
+            <img src="imagenes/foto32.jpg" alt="Foto 32">
+            <img src="imagenes/foto33.jpg" alt="Foto 33">
+            
+            <!-- Borde derecho - imágenes adicionales -->
+            <img src="imagenes/foto34.jpg" alt="Foto 34">
+        </div>
+    </div>
+    
+    <button class="home-button" id="homeBtn">🏠</button>
+    <div class="page-transition" id="pageTransition"></div>
+</body>
+</html>
