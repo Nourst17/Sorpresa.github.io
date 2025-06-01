@@ -227,6 +227,27 @@
             const surpriseBtn = document.getElementById('surpriseBtn');
             const pageTransition = document.getElementById('pageTransition');
             
+            // Crear elemento de audio
+            const backgroundMusic = new Audio('musica/bienvenida.mp3');
+            
+            // Configurar propiedades
+            backgroundMusic.loop = true; // La música se repetirá
+            backgroundMusic.volume = 0.5; // Volumen al 50%
+            
+            // Intentar reproducir automáticamente
+            const playPromise = backgroundMusic.play();
+            
+            if (playPromise !== undefined) {
+                playPromise.catch(function() {
+                    // Si falla la reproducción automática, configuramos para reproducir con el primer clic
+                    document.addEventListener('click', function playOnFirstClick() {
+                        backgroundMusic.play();
+                        // Eliminar este evento después del primer clic
+                        document.removeEventListener('click', playOnFirstClick);
+                    }, { once: true });
+                });
+            }
+            
             // Voltear la carta al hacer clic
             cardContainer.addEventListener('click', function() {
                 card.classList.add('flipped');
@@ -243,6 +264,16 @@
                 
                 // Activar la animación de transición
                 pageTransition.classList.add('active');
+                
+                // Detener la música gradualmente
+                const fadeAudio = setInterval(function() {
+                    if (backgroundMusic.volume > 0.1) {
+                        backgroundMusic.volume -= 0.1;
+                    } else {
+                        clearInterval(fadeAudio);
+                        backgroundMusic.pause();
+                    }
+                }, 100);
                 
                 // Redirigir después de que termine la animación
                 setTimeout(function() {
