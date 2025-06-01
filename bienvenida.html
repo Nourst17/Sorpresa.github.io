@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bienvenida</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background: linear-gradient(135deg, #ff99cc, #ff66b3);
+            animation: backgroundPulse 1s infinite;
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            text-align: center;
+            overflow: hidden;
+        }
+        
+        @keyframes backgroundPulse {
+            0%, 100% {
+                background: linear-gradient(135deg, #ff99cc, #ff66b3);
+            }
+            50% {
+                background: linear-gradient(135deg, #ffb3d9, #ff80c1);
+            }
+        }
+        
+        /* Media queries para hacer la página responsive */
+        @media (max-width: 768px) {
+            .card-container {
+                width: 250px;
+                height: 350px;
+            }
+            .card-title {
+                font-size: 1.5rem;
+                margin-top: 100px;
+            }
+            .surprise-button {
+                font-size: 1.2rem;
+                padding: 12px 24px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .card-container {
+                width: 200px;
+                height: 300px;
+            }
+            .card-title {
+                font-size: 1.3rem;
+                margin-top: 80px;
+            }
+            .card-text {
+                font-size: 0.9rem;
+            }
+            .surprise-button {
+                font-size: 1rem;
+                padding: 10px 20px;
+            }
+        }
+        
+        /* Estilos para la carta */
+        .card-container {
+            perspective: 1000px;
+            width: 300px;
+            height: 400px;
+            cursor: pointer;
+            margin: 0 auto;
+        }
+        
+        .card {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transform-style: preserve-3d;
+            transition: transform 0.8s;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+        }
+        
+        .card.flipped {
+            transform: rotateY(180deg);
+        }
+        
+        .card-front, .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 15px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        
+        .card-front {
+            background: white;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><path d="M50,30 C55,20 65,20 70,30 C75,40 75,50 50,70 C25,50 25,40 30,30 C35,20 45,20 50,30 Z" fill="%23ff3366"/></svg>');
+            background-repeat: no-repeat;
+            background-position: center 30px;
+            background-size: 100px;
+        }
+        
+        .card-back {
+            background: linear-gradient(45deg, #ff3366, #ff66b3);
+            animation: cardBackPulse 1s infinite;
+            transform: rotateY(180deg);
+            color: white;
+        }
+        
+        @keyframes cardBackPulse {
+            0%, 100% {
+                background: linear-gradient(45deg, #ff3366, #ff66b3);
+            }
+            50% {
+                background: linear-gradient(45deg, #ff4d80, #ff80c1);
+            }
+        }
+        
+        .card-title {
+            color: #ff3366;
+            margin-top: 120px;
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+        }
+        
+        .card-text {
+            color: #333;
+            margin-bottom: 30px;
+            padding: 0 20px;
+        }
+        
+        .card-instruction {
+            font-size: 0.9rem;
+            color: #ff6699;
+            position: absolute;
+            bottom: 20px;
+            animation: pulse 1.5s infinite;
+        }
+        
+        /* Estilos para el botón sorpresa */
+        .surprise-button {
+            padding: 15px 30px;
+            background: white;
+            color: #ff3366;
+            font-size: 1.5rem;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            margin-top: 20px;
+            opacity: 0;
+            transform: scale(0);
+            transition: opacity 0.5s, transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        
+        .surprise-button.show {
+            opacity: 1;
+            transform: scale(1);
+            animation: pulse 1.5s infinite;
+        }
+        
+        .surprise-button:hover {
+            background: #fff9fb;
+            box-shadow: 0 7px 20px rgba(0, 0, 0, 0.3);
+            transform: scale(1.05);
+        }
+        
+        /* Animación de salida */
+        .page-transition {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #ff3366;
+            z-index: 1000;
+            transform: scale(0);
+            border-radius: 50%;
+            pointer-events: none;
+            transition: transform 0.8s cubic-bezier(0.86, 0, 0.07, 1);
+        }
+        
+        .page-transition.active {
+            transform: scale(2);
+        }
+        
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.1);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="card-container" id="cardContainer">
+        <div class="card" id="card">
+            <div class="card-front">
+                <h1 class="card-title">Bienvenida, mi amor</h1>
+                <p class="card-text">Aca un regalo pequeño, pero es para que sepas que siempre pienso en ti.</p>
+                <p class="card-instruction">Haz clic para abrir la carta</p>
+            </div>
+            <div class="card-back">
+                <h2>Te amo mucho</h2>
+                <p>Eres lo más hermoso que me ha pasado en la vida.</p>
+                <button class="surprise-button" id="surpriseBtn">¡SORPRESA!</button>
+            </div>
+        </div>
+    </div>
+    
+    <div class="page-transition" id="pageTransition"></div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const card = document.getElementById('card');
+            const cardContainer = document.getElementById('cardContainer');
+            const surpriseBtn = document.getElementById('surpriseBtn');
+            const pageTransition = document.getElementById('pageTransition');
+            
+            // Voltear la carta al hacer clic
+            cardContainer.addEventListener('click', function() {
+                card.classList.add('flipped');
+                
+                // Mostrar el botón sorpresa después de voltear la carta
+                setTimeout(function() {
+                    surpriseBtn.classList.add('show');
+                }, 500);
+            });
+            
+            // Evitar que el clic en el botón voltee la carta de nuevo
+            surpriseBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                
+                // Activar la animación de transición
+                pageTransition.classList.add('active');
+                
+                // Redirigir después de que termine la animación
+                setTimeout(function() {
+                    window.location.href = 'index.html';
+                }, 800);
+            });
+        });
+    </script>
+</body>
+</html>
